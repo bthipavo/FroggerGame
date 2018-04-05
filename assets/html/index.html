@@ -5,57 +5,107 @@
     <title>Frogger</title>
     <style>* { padding: 0; margin: 0; }</style>
     <script src="http://labs.phaser.io/build/phaser-arcade-physics.min.js"></script>
-    <script src="../js/game.js"></script>
+    <!-- <script src="../js/game.js"></script> -->
 </head>
 <body>
 <script>
     
-    var config = {
+    let config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 200 }
-        }
-    },
     scene: {
+        init: init,
         preload: preload,
-        create: create
+        create: create,
+        update: update
     }
     };
+    var cursors
+    let game = new Phaser.Game(config);
 
-    var game = new Phaser.Game(config);
+    function init () {
+        this.playerSpeed = 1.5
+        this.enemySpeed = 2
+        this.enemyMaxX = 80
+        this.enemyMinX = 280
+    }
 
     function preload ()
     {
-        // this.load.setBaseURL('http://labs.phaser.io');
 
-        this.load.image('ball', '../img/ball.png');
-        this.load.image('player', '../img/mark.jpg');
-        this.load.image('red', '../img/ball.png');
+        this.load.image('bg', '/img/froggerBG.png');
+        this.load.image('player', '/img/mark.jpg');
+        this.load.image('red', '/img/ball.png');
+        this.load.image('mario', '/img/mario.png');
+        this.load.image('bowser', '/img/bowser.jpg');
+        this.load.image('koopa', '/img/koopa.png');
+        this.load.image('toad', '/img/toad.png');
+        this.load.image('bush', '/img/berry_bush.png');
     }
 
     function create ()
     {
-        this.add.image(400, 300, 'ball');
+        let background = this.add.sprite(0, 0, 'bg');
+        cursors = game.input.keyboard.createCursorKeys()
 
-        var particles = this.add.particles('red');
+        // var particles = this.add.particles('red');
 
-        var emitter = particles.createEmitter({
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD'
-        });
+        // var emitter = particles.createEmitter({
+        //     speed: 100,
+        //     scale: { start: 1, end: 0 },
+        //     blendMode: 'ADD'
+        // });
 
-        var player = this.physics.add.image(400, 100, 'player');
+        background.setOrigin(0, 0);
 
-        player.setVelocity(100, 200);
-        player.setBounce(1, 1);
-        player.setCollideWorldBounds(true);
+        this.add.image(100, 250, 'bush')
+        this.add.image(500, 100, 'mario')
+        this.add.image(100, 500, 'toad')
+        this.add.image(700, 350, 'bush')
+        this.add.image(200, 300, 'koopa')
 
-        emitter.startFollow(player);
+
+
+
+        this.player = this.add.sprite(this.sys.game.config.width / 2, 575, 'player');
+        this.player.setScale(0.5)
+
+        // player.setVelocity(100, 200);
+        // player.setBounce(1, 1);
+        // player.setCollideWorldBounds(true);
+
+        // emitter.startFollow(this.player);
+    }
+
+    function update () {
+        // console.log("pointer" + this.input.activePointer.isDown)
+        if (cursors.up.isDown) {
+
+    // player walks
+            this.player.y -= this.playerSpeed;
+            console.log("increase" + this.player.x)
+        }
+        if (cursors.down.isDown) {
+
+    // player walks
+            this.player.y += this.playerSpeed;
+            console.log("increase" + this.player.x)
+        }
+
+        if (cursors.right.isDown) {
+
+    // player walks
+            this.player.x += this.playerSpeed;
+            console.log("increase" + this.player.x)
+        }
+        if (cursors.left.isDown) {
+
+    // player walks
+            this.player.x -= this.playerSpeed;
+            console.log("increase" + this.player.x)
+        }
+
     }
 </script>
 </body>
